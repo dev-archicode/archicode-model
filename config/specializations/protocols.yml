@@ -1,0 +1,17 @@
+schemaVersion: 1
+specializations:
+  https:
+    baseRelation: serving
+    description: "HTTP over TLS"
+  http:
+    baseRelation: serving
+    description: "HTTP inside the cluster, without TLS"
+  websocket:
+    baseRelation: serving
+    description: "A WebSocket, upgraded from an HTTP request"
+  jdbc:
+    baseRelation: serving
+    description: "SQL over JDBC, to PostgreSQL"
+  redis:
+    baseRelation: serving
+    description: "The Redis protocol"

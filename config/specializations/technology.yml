@@ -1,0 +1,5 @@
+schemaVersion: 1
+specializations:
+  "data store":
+    base: system-software
+    description: "A database or a cache the product keeps data in"

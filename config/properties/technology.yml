@@ -1,0 +1,36 @@
+schemaVersion: 1
+properties:
+  node:
+    - key: realization-status
+      type: enum
+      enums: realization-status
+    - key: technology
+      type: string
+  device:
+    - key: technology
+      type: string
+  system-software:
+    - key: realization-status
+      type: enum
+      enums: realization-status
+    - key: version
+      type: string
+    # Whether losing the store loses nothing: true for a store rebuilt from the repositories.
+    - key: disposable
+      type: boolean
+  artifact:
+    - key: realization-status
+      type: enum
+      enums: realization-status
+    - key: path
+      type: string
+    - key: disposable
+      type: boolean
+  technology-interface:
+    - key: realization-status
+      type: enum
+      enums: realization-status
+    - key: protocol
+      type: string
+    - key: port
+      type: integer

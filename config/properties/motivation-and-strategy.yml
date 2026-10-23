@@ -1,0 +1,16 @@
+schemaVersion: 1
+properties:
+  principle:
+    - key: number
+      type: integer
+  requirement:
+    - key: ref
+      type: string
+    - key: status
+      type: enum
+      enums: requirement-status
+    - key: roadmap
+      type: string
+  capability:
+    - key: roadmap
+      type: string

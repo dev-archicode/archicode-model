@@ -1,0 +1,15 @@
+schemaVersion: 1
+enums:
+  # The kinds each repository sorts its own modules into: the backend's core libraries, the
+  # support library of its server applications, applications, reference model, documents and test
+  # support; the web frontend's shell, remotes and packages.
+  module-kind:
+    - core
+    - support-library
+    - application
+    - reference-model
+    - documents
+    - test-support
+    - shell
+    - remote
+    - package

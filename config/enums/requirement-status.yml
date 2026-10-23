@@ -1,0 +1,7 @@
+schemaVersion: 1
+enums:
+  # The status column of the product's traceability matrix.
+  requirement-status:
+    - implemented
+    - planned
+    - future

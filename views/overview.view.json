@@ -1,0 +1,42 @@
+{
+  "edges": [
+    { "source": "application.backend.cli", "target": "application.backend.compiler", "type": "aggregation" },
+    { "derived": true, "source": "application.backend.command-line", "target": "business.developer", "type": "serving" },
+    { "source": "application.backend.compiler", "target": "application.backend.language", "type": "serving" },
+    { "source": "application.backend.compiler", "target": "application.backend.storage-index", "type": "serving" },
+    { "source": "application.backend.compiler", "target": "application.backend.storage-model", "type": "serving" },
+    { "source": "application.backend.mcp", "target": "application.backend.compiler", "type": "aggregation" },
+    { "source": "application.backend.mcp", "target": "application.backend.storage-index", "type": "aggregation" },
+    { "derived": true, "source": "application.backend.mcp-tools", "target": "business.ai-agent", "type": "serving" },
+    { "source": "application.backend.model-service", "target": "application.backend.compiler", "type": "aggregation" },
+    { "source": "application.backend.model-service", "target": "application.backend.storage-model", "type": "aggregation" },
+    { "derived": true, "source": "application.backend.model-service", "target": "application.edge.gateway", "type": "serving" },
+    { "derived": true, "source": "application.edge.gateway", "target": "application.frontend.web-application", "type": "serving" },
+    { "source": "application.frontend.web-ui", "target": "business.architect", "type": "serving" },
+    { "bendpoints": [{ "x": 370, "y": 750 }], "id": "fetch", "source": "external.git-host", "target": "application.backend.model-service", "type": "serving" },
+    { "bendpoints": [{ "x": 470, "y": 750 }], "id": "push", "source": "external.git-host", "target": "application.backend.model-service", "type": "serving" },
+    { "source": "external.identity-provider", "target": "application.edge.gateway", "type": "serving" }
+  ],
+  "id": "overview",
+  "nodes": [
+    { "height": 200, "ref": "application.backend.cli", "width": 360, "x": 640, "y": 160 },
+    { "height": 80, "parent": "application.backend.cli", "ref": "application.backend.command-line", "width": 200, "x": 80, "y": 90 },
+    { "height": 80, "ref": "application.backend.compiler", "width": 200, "x": 720, "y": 620 },
+    { "height": 80, "ref": "application.backend.language", "width": 200, "x": 1120, "y": 620 },
+    { "height": 200, "ref": "application.backend.mcp", "width": 360, "x": 1040, "y": 160 },
+    { "height": 80, "parent": "application.backend.mcp", "ref": "application.backend.mcp-tools", "width": 200, "x": 80, "y": 90 },
+    { "height": 80, "ref": "application.backend.model-service", "width": 200, "x": 320, "y": 620 },
+    { "height": 80, "ref": "application.backend.storage-index", "width": 200, "x": 1120, "y": 800 },
+    { "height": 80, "ref": "application.backend.storage-model", "width": 200, "x": 720, "y": 800 },
+    { "height": 80, "ref": "application.edge.gateway", "width": 200, "x": 320, "y": 440 },
+    { "height": 200, "ref": "application.frontend.web-application", "width": 360, "x": 240, "y": 160 },
+    { "height": 80, "parent": "application.frontend.web-application", "ref": "application.frontend.web-ui", "width": 200, "x": 80, "y": 90 },
+    { "height": 80, "ref": "business.ai-agent", "width": 200, "x": 1120, "y": 0 },
+    { "height": 80, "ref": "business.architect", "width": 200, "x": 320, "y": 0 },
+    { "height": 80, "ref": "business.developer", "width": 200, "x": 720, "y": 0 },
+    { "height": 80, "ref": "external.git-host", "width": 200, "x": 320, "y": 800 },
+    { "height": 80, "ref": "external.identity-provider", "width": 200, "x": 0, "y": 440 }
+  ],
+  "schemaVersion": 1,
+  "title": "ArchiCode overview"
+}

@@ -1,0 +1,32 @@
+schemaVersion: 1
+
+palette:
+  accent: { light: "#0B5FFF", dark: "#6EA8FF" }
+
+styles:
+  - elements: { property: { realization-status: planned } }
+    stroke: red
+    strokeWidth: 2
+
+  - elements: { specialization: "rest api" }
+    fill: accent
+    textColor: "#FFFFFF"
+    iconColor: "#FFFFFF"
+
+  # The overview's point is one core behind three surfaces, so there the core stands out.
+  - elements: { property: { tags: core } }
+    in: [overview]
+    fill: accent
+    textColor: "#FFFFFF"
+    iconColor: "#FFFFFF"
+
+  # The compilation's point is the compiled model each compilation starts from and leaves behind, so there it stands out.
+  - elements: { ref: application.backend.compiler.compiled-model }
+    in: [compilation]
+    fill: accent
+    textColor: "#FFFFFF"
+    iconColor: "#FFFFFF"
+
+  # A relation that names its protocol is labelled with what flows, the protocol and what it is for.
+  - relations: { specialization: [https, http, websocket, jdbc, redis] }
+    label: [name, specialization, description]

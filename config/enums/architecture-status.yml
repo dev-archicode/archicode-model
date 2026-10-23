@@ -1,0 +1,6 @@
+schemaVersion: 1
+enums:
+  architecture-status:
+    - target
+    - temporary
+    - deprecated

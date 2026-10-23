@@ -1,0 +1,23 @@
+schemaVersion: 1
+specializations:
+  "rest api":
+    base: application-interface
+    description: "REST API interface"
+  "soap api":
+    base: application-interface
+    description: "SOAP API interface"
+  "graphql api":
+    base: application-interface
+    description: "GraphQL API interface"
+  "websocket api":
+    base: application-interface
+    description: "WebSocket API interface"
+  "grpc api":
+    base: application-interface
+    description: "gRPC API interface"
+  "json-rpc api":
+    base: application-interface
+    description: "JSON-RPC 2.0 interface"
+  "command line":
+    base: application-interface
+    description: "Command-line interface: arguments, standard streams, exit code"

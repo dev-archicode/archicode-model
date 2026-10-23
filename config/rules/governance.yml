@@ -1,0 +1,108 @@
+schemaVersion: 1
+
+rules:
+  - id: element-states-realization-status
+    kind: required-property
+    severity: error
+    description: "A component or anything that runs it says whether it is planned, in development or running, so that nobody builds on one that does not exist yet"
+    elements: { type: [application-component, node, system-software, artifact] }
+    property: realization-status
+
+  - id: module-names-its-repository
+    kind: required-property
+    severity: error
+    description: "A module says which repository holds its code, so that a person or an agent can go from the model to the source"
+    elements: { property: { module-kind: [core, support-library, application, reference-model, documents, test-support, shell, remote, package] } }
+    property: repository
+
+  - id: interface-names-its-protocol
+    kind: required-property
+    severity: warning
+    description: "Whoever integrates with an interface needs its protocol before anything else"
+    elements: { type: application-interface }
+    property: protocol
+
+  - id: module-graph-is-acyclic
+    kind: acyclicity
+    severity: error
+    description: "The libraries' graph, and the compiler's package graph within it, stay acyclic; an application, which ships libraries and serves none, is a leaf"
+    relations:
+      type: serving
+      source: { package: application.backend.* }
+      target: { package: application.backend.* }
+
+  - id: nothing-depends-on-an-application
+    kind: forbidden-relation
+    severity: error
+    description: "An application is a leaf of the build: a module that depends on one ships all of it"
+    relations:
+      type: serving
+      source: { type: application-component, property: { module-kind: application } }
+      target: { type: application-component, package: application.backend.* }
+
+  - id: nothing-ships-an-application
+    kind: forbidden-relation
+    severity: error
+    description: "An application is what a deployment runs, never a part another module ships"
+    relations:
+      type: aggregation
+      target: { type: application-component, property: { module-kind: application } }
+
+  - id: browser-reaches-services-through-the-gateway
+    kind: forbidden-relation
+    severity: error
+    description: "The gateway is the only server the web application talks to; a service behind it never serves the browser directly"
+    relations:
+      type: serving
+      source: { package: application.backend.* }
+      target: { package: application.frontend }
+
+  - id: store-says-whether-it-is-disposable
+    kind: required-property
+    severity: error
+    description: "Every store but the product store is derived and disposable; one that does not say which is one nobody may safely wipe"
+    elements: { specialization: "data store" }
+    property: disposable
+
+  - id: requirement-names-its-id
+    kind: required-property
+    severity: error
+    description: "A requirement carries its id in the requirements documents, so that the model and the documents stay one set"
+    elements: { type: requirement }
+    property: ref
+
+  - id: implemented-requirement-is-realized
+    kind: cardinality
+    severity: error
+    description: "A requirement marked implemented names what implements it, or the claim cannot be checked"
+    elements: { type: requirement, property: { status: implemented } }
+    direction: incoming
+    relations: { type: realization }
+    min: 1
+
+  - id: principle-is-realized
+    kind: cardinality
+    severity: warning
+    description: "A principle that nothing in the model realizes is a slogan"
+    elements: { type: principle }
+    direction: incoming
+    relations: { type: realization }
+    min: 1
+
+  - id: core-module-is-used
+    kind: cardinality
+    severity: warning
+    description: "A core module no application ships is dead code, or the model misses the application that ships it"
+    elements: { property: { module-kind: core } }
+    direction: incoming
+    relations: { type: aggregation, source: { property: { module-kind: application } } }
+    min: 1
+
+  - id: no-process-cycles
+    kind: acyclicity
+    severity: error
+    description: "A process chain that loops back on itself never completes, and a junction does not hide the loop"
+    relations: { type: [flow, triggering] }
+
+builtins:
+  UNUSED_IMPORT: { severity: error }

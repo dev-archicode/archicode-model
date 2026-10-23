@@ -1,0 +1,6 @@
+schemaVersion: 1
+properties:
+  serving:
+    - key: realization-status
+      type: enum
+      enums: realization-status

@@ -1,0 +1,7 @@
+schemaVersion: 1
+enums:
+  realization-status:
+    - planned
+    - develop
+    - production
+    - decommissioned

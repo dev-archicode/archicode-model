@@ -1,0 +1,13 @@
+schemaVersion: 1
+properties:
+  application-interface:
+    - key: realization-status
+      type: enum
+      enums: realization-status
+    - key: architecture-status
+      type: enum
+      enums: architecture-status
+    - key: protocol
+      type: string
+    - key: endpoint
+      type: string

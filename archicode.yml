@@ -1,0 +1,5 @@
+name: archicode-model
+version: "1.0"
+notation:
+  name: archimate
+  version: "4.0"
