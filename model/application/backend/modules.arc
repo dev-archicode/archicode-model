@@ -559,7 +559,7 @@ elements:
   examples:
     type: application-component
     name: Examples
-    description: "The reference models, used in demos and tests and never shipped — this model among them."
+    description: "The reference models — an ArchiMate one made from this model as it stood on 2026-10-23, and a C4 one — that the tests compile and the web's acceptance runs, published for it as repositories it resets before every run; test models, never shipped. This model lives in a repository of its own, changed with ArchiCode and by pull requests."
     properties:
       realization-status: develop
       module-kind: reference-model
