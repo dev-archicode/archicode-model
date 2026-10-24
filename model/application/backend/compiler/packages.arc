@@ -63,7 +63,7 @@ elements:
   derivation:
     type: application-component
     name: Derivation
-    description: "Derives the relations a model implies from the ones it states, by the rules its notation declares, each by the shortest chain of stated relations. From a base it derives again only what a change reaches."
+    description: "Answers, on demand, which relations a model implies from the ones it states, by the rules its notation declares, each by the shortest chain of stated relations: a session reads the declared relations of only the part of the model a question reaches, a wave at a time, and derives again only what a later question adds. Nothing derives while a model compiles and nothing derived is stored."
     properties:
       realization-status: develop
       path: compiler/src/main/java/dev/archicode/compiler/model/derivation
@@ -80,8 +80,6 @@ elements:
         target: application.backend.storage-index
       - type: serving
         target: application.backend.storage-model
-      - type: assignment
-        target: derive
 
   diagnostic:
     type: application-component
@@ -330,7 +328,7 @@ elements:
   pipeline:
     type: application-component
     name: Pipeline
-    description: "The compiler's entry point: runs the stages in order, over a base — the compiled model of an earlier state of the same model — or over none. A file whose content is the base's is not read again, and each stage computes again, from what it last ran on, only what a change affects, so that the result is the one a compilation of all the files gives. A stage that builds ends the compilation when it finds an error, the checks always run, and what derives runs only on a model without errors."
+    description: "The compiler's entry point: runs the stages in order, over a base — the compiled model of an earlier state of the same model — or over none. A file whose content is the base's is not read again, and each stage computes again, from what it last ran on, only what a change affects, so that the result is the one a compilation of all the files gives. A stage that builds ends the compilation when it finds an error, the lint and the rules always run, and the checks of the styles and the views run only on a model without errors; the view check asks one derivation session for the derived edges and nestings of the views it checks."
     properties:
       realization-status: develop
       path: compiler/src/main/java/dev/archicode/compiler/pipeline
@@ -612,7 +610,7 @@ elements:
   compile:
     type: process
     name: Compile a model
-    description: "Turns a model's files into a resolved and linted model with its derived relations, or into the errors that stop it. It starts from a base — the compiled model of an earlier revision of the same model — or from none, through the same stages either way: each computes again, from what it last ran on, only what the change affects, and with no base everything is affected. Whatever the base, the answer is the one a compilation of all the files gives."
+    description: "Turns a model's files into a resolved and linted model, with its views checked, or into the errors that stop it; it derives no relation. It starts from a base — the compiled model of an earlier revision of the same model — or from none, through the same stages either way: each computes again, from what it last ran on, only what the change affects, and with no base everything is affected. Whatever the base, the answer is the one a compilation of all the files gives."
     relations:
       - type: composition
         target: parse
@@ -626,8 +624,6 @@ elements:
         target: lint
       - type: composition
         target: evaluate-rules
-      - type: composition
-        target: derive
       - type: composition
         target: check-views
       - type: access
@@ -704,22 +700,14 @@ elements:
     description: "Evaluates the model's own validation rules and their exceptions; an error finding is fatal. From a base a rule bound as before is evaluated again only for the elements and chains the change touches, and its model-wide parts — acyclicity, the use of an exception — when something its selectors match changed."
     relations:
       - type: triggering
-        target: derive
-
-  derive:
-    type: process
-    name: Derive
-    description: "Derives the relations the model implies, each by its shortest chain of stated relations, unless the model is already fatal. From a base it takes out every derived fact standing on what changed and derives again from what remains; past a bound on how much changed it derives whole."
-    relations:
-      - type: triggering
         target: check-views
 
   check-views:
     type: process
     name: Check views
-    description: "Checks every view against the model and its derived relations, and resolves the styles that match only derived relations. From a base a view is checked again only when its file changed, an element it places changed, or a relation came or went between two elements it places."
+    description: "Checks every view against the model, on a model without errors alone, asking one derivation session over its declared relations for the edges a view marks derived and the nestings no declared relation justifies. From a base a view is checked again only when its file changed, an element it places changed, or a relation came or went between two elements it places."
 
   compiled-model:
     type: data-object
     name: Compiled model
-    description: "What a compilation answers — the model, its findings, its derived relations, its bound rules and styles — with what a later compilation of the same model starts from: each file's unit with the id of its content, the manifest's id and the state each stage last computed. Immutable and shared between threads, and never what a read is answered from."
+    description: "What a compilation answers — the model, its findings, its bound rules and styles — with what a later compilation of the same model starts from: each file's unit with the id of its content, the manifest's id and the state each stage last computed. Immutable and shared between threads, and never what a read is answered from."

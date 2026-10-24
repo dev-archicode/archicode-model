@@ -48,7 +48,7 @@ elements:
   compiler:
     type: application-component
     name: Compiler
-    description: "Turns model files into a resolved, validated and linted model, and derives the relations it implies."
+    description: "Turns model files into a resolved, validated and linted model, and answers on demand the relations it implies."
     tags: [compiler, core]
     properties:
       realization-status: develop
@@ -172,7 +172,7 @@ elements:
   storage-index:
     type: application-component
     name: Storage — Index
-    description: "The graph index: a model's compilation applied at a revision in one transaction, and the reads over it, in one graph partitioned by model. Rebuildable from the repository alone; it reads no git and compiles nothing. No deployment takes it: the model service walks the read model for impact, and only the MCP server, out of the build, uses the index, which goes when that server is unfrozen."
+    description: "The graph index: a model's compilation applied at a revision in one transaction, and the reads over it, in one graph partitioned by model, the declared relations alone. Rebuildable from the repository alone; it reads no git and compiles nothing. No deployment takes it: the model service walks the read model for impact, and only the MCP server, out of the build, uses the index, which goes when that server is unfrozen."
     properties:
       realization-status: develop
       module-kind: core
@@ -187,7 +187,7 @@ elements:
   storage-model:
     type: application-component
     name: Storage — Model
-    description: "The read model: a model's files and what its compilation yields, written at a revision and never changed, the head's row and the lease that guards moving it, and the reads over them, in PostgreSQL. Derived from the repository; it reads no git and compiles nothing."
+    description: "The read model: a model's files and what its compilation yields, the declared relations alone, written at a revision and never changed, the head's row and the lease that guards moving it, and the reads over them, in PostgreSQL. Derived from the repository; it reads no git and compiles nothing."
     properties:
       realization-status: develop
       module-kind: core
@@ -206,7 +206,7 @@ elements:
   read-model:
     type: data-object
     name: Read model
-    description: "The files of each model at a revision and what compiling them yields — elements, relations, packages, views — with a head per model naming the revision every read is answered from. Derived and disposable."
+    description: "The files of each model at a revision and what compiling them yields — elements, declared relations, packages, views; no derived relation — with a head per model naming the revision every read is answered from. Derived and disposable."
 
   overlay:
     type: data-object
@@ -216,7 +216,7 @@ elements:
   graph-index:
     type: data-object
     name: Graph index
-    description: "Elements, junctions, relations, properties and the view registry of each model, projected for the MCP server's search, impact and context queries. The MCP server's alone, embedded in its process; no deployment takes it. Derived and disposable."
+    description: "Elements, junctions, declared relations, properties and the view registry of each model, projected for the MCP server's search, impact and context queries. The MCP server's alone, embedded in its process; no deployment takes it. Derived and disposable."
 
   service-support:
     type: application-component
@@ -308,7 +308,7 @@ elements:
   model-service:
     type: application-component
     name: Model service
-    description: "The model side behind the gateway: the web application's APIs over a model, the one writer to each model repository, and the product store's first owner. Writes the head of each branch it fetches into the read model and answers every read from there, of the branch the read names, from no compiled model, so any number of instances run side by side; each holds the compiled models of the heads it works on, the base of its next compilations, so that a commit costs what it changes. Holds a person's draft as overlays in Redis, which every instance shares, with the rows of the model files the draft changes, read in place of the head's, so that an element made or edited in the draft is seen before it is promoted. Knows no kind of git host."
+    description: "The model side behind the gateway: the web application's APIs over a model, the one writer to each model repository, and the product store's first owner. Writes the head of each branch it fetches into the read model and answers every read from there, of the branch the read names, from no compiled model, so any number of instances run side by side; each holds the compiled models of the heads it works on, the base of its next compilations, so that a commit costs what it changes. Holds a person's draft as overlays in Redis, which every instance shares, with the rows of the model files the draft changes, read in place of the head's, so that an element made or edited in the draft is seen before it is promoted. Stores no derived relation, neither in the read model nor in an overlay: a read that needs them asks a derivation session over the read model's declared relations, the draft's overlay laid over each wave. Knows no kind of git host."
     properties:
       realization-status: develop
       module-kind: application
