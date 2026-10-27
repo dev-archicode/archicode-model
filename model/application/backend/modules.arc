@@ -298,8 +298,6 @@ elements:
       realization-status: develop
       protocol: "MCP, JSON-RPC 2.0 over stdio"
     relations:
-      - type: realization
-        target: motivation.nfr-s7
       - type: serving
         target: external.ai-agent
       - type: serving

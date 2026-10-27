@@ -81,10 +81,10 @@ elements:
 
   nfr-s7:
     type: requirement
-    name: MCP access over local stdio
+    name: The agent interface served by the deployment, an agent signed in as a person
     properties:
       ref: NFR-S7
-      status: implemented
+      status: planned
 
   nfr-p6:
     type: requirement
