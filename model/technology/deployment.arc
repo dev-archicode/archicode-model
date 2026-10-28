@@ -124,7 +124,7 @@ elements:
   overlay-store:
     type: artifact
     name: Overlay store
-    description: "The overlays of drafts in Redis, under keys with a prefix of the model service's own: each a person's files of a model with the check of them, kept for the person and the model, the four a person named most recently, and dropped an hour after nobody named it. Every instance of the service shares it. Losing it loses nothing: the client sends an overlay again."
+    description: "The overlays of drafts in Redis, under keys with a prefix of the model service's own: each a person's files of a model with the check of them and its findings, no rows, kept for the person and the model, the four a person named most recently, and dropped an hour after nobody named it. Every instance of the service shares it. Losing it loses nothing: the client sends an overlay again."
     properties:
       realization-status: develop
       disposable: true
@@ -137,7 +137,7 @@ elements:
   model-service-node:
     type: node
     name: Model service
-    description: "The one writer to each model repository: it keeps a clone of each model to fetch and push with, compiles each head it fetches and writes it into the read model, and answers every read from there; a person's draft is held beside it as overlays in Redis. It answers no read from a compiled model — what it holds of the heads it works on is only the base of its next compilations —, so as many instances as the load asks for run side by side."
+    description: "The one writer to each model repository: it keeps a clone of each model to fetch and push with, compiles each head it fetches and writes it into the read model, and answers every read from there; a person's draft is held beside it as overlays in Redis and, once checked, as a draft revision in the read model. It answers no read from a compiled model — what it holds of the heads it works on is only the base of its next compilations —, so as many instances as the load asks for run side by side."
     properties:
       realization-status: develop
       technology: "Java 25"
@@ -217,7 +217,7 @@ elements:
   read-model-database:
     type: artifact
     name: Read model database
-    description: "A database of the PostgreSQL cluster beside the product store's, with credentials of its own, that the model service writes and reads: a revision of every model, derived from the repositories. Dropping it loses nothing; the service writes each model again at its next follow."
+    description: "A database of the PostgreSQL cluster beside the product store's, with credentials of its own, that the model service writes and reads: a revision of every model, derived from the repositories, and the people's draft revisions beside them. A file's rows are written once and shared by every revision that holds the file. Dropping it loses nothing; the service writes each model again at its next follow."
     properties:
       realization-status: develop
       disposable: true
