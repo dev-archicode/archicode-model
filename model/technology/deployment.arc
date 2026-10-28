@@ -104,7 +104,7 @@ elements:
     type: system-software
     name: Redis
     specialization: "data store"
-    description: "The gateway's sessions and their tokens, the authorization request between the sign-in flow's two legs, and the lock that serialises a refresh, and the model service's overlays under keys of their own, the pull requests it keeps for every instance of it, and its live channel's pub/sub, which carries a branch's head move, or its disappearance, and the list of who is where on which branch between instances. A session survives a restart of the gateway; an overlay is a cache the client sends again; what the host said of pull requests is a cache the host is asked for again; a message of the channel is a signal that may be lost."
+    description: "The gateway's sessions and their tokens, the authorization request between the sign-in flow's two legs, and the lock that serialises a refresh, and the model service's overlays under keys of their own, the files of its collaborative sessions, the pull requests it keeps for every instance of it, and its live channel's pub/sub, which carries a branch's head move, or its disappearance, and the list of who is where on which branch between instances. A session survives a restart of the gateway; an overlay and a session's files are a cache the client sends again; what the host said of pull requests is a cache the host is asked for again; a message of the channel is a signal that may be lost."
     properties:
       realization-status: develop
       version: "8.10"
@@ -124,13 +124,15 @@ elements:
   overlay-store:
     type: artifact
     name: Overlay store
-    description: "The overlays of drafts in Redis, under keys with a prefix of the model service's own: each a person's files of a model with the check of them and its findings, no rows, kept for the person and the model, the four a person named most recently, and dropped an hour after nobody named it. Every instance of the service shares it. Losing it loses nothing: the client sends an overlay again."
+    description: "The overlays of drafts in Redis, under keys with a prefix of the model service's own: each a person's files of a model with the check of them, kept for the person and the model, the four a person named most recently, and dropped an hour after nobody named it. A collaborative session's overlays are in it as well, the four latest of a session, beside the files and contents of the session itself under a prefix of their own. Every instance of the service shares it. Losing it loses nothing: the client sends an overlay again, and the keeper sends a session's files again."
     properties:
       realization-status: develop
       disposable: true
     relations:
       - type: realization
         target: application.backend.overlay
+      - type: realization
+        target: application.backend.session
       - type: realization
         target: motivation.stores-are-disposable
 
@@ -194,7 +196,7 @@ elements:
     type: system-software
     name: PostgreSQL
     specialization: "data store"
-    description: "One cluster, two databases. The product store: accounts, linked credentials, hidden models, audit; never architecture, and not rebuildable from anything. The read model's database stands beside it, apart."
+    description: "One cluster, two databases. The product store: accounts, linked credentials, hidden models, audit, the record of each collaborative session; never architecture, and not rebuildable from anything. The read model's database stands beside it, apart."
     properties:
       realization-status: develop
       version: "18.6"

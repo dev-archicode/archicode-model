@@ -213,6 +213,11 @@ elements:
     name: Overlay
     description: "A person's draft files of a model, as the service holds them to lay over its head: each file's path, the id of the content it started from and its new content or that it is deleted, with what compiling them with the head found, and the findings; it holds no rows, which the check writes into the read model as a draft revision. Named by the SHA-256 of its files. A cache the service may lose; the draft is the browser's."
 
+  session:
+    type: data-object
+    name: Session
+    description: "A draft shared as a session on a branch: a record in the product store — its branch, owner, keeper, version, who is in it and who wrote to it — and its files in Redis, a cache the keeper's client sends again, with their contents and holds. One session to a branch. The draft itself is the participants' browsers'."
+
   graph-index:
     type: data-object
     name: Graph index
@@ -353,6 +358,9 @@ elements:
         target: overlay
         properties: { access-type: readwrite }
       - type: access
+        target: session
+        properties: { access-type: readwrite }
+      - type: access
         target: application.backend.compiler.compiled-model
         description: "Holds the compiled models of the heads it brought in or compiled over, by model and revision, bounded by their estimated weight with the least recently used going first: a branch's new head is compiled from its previous head's, else the default's, else from all the files, and a draft's check, a refactor, a compare and an update from the head's. A draft's compilation is never held."
         properties: { access-type: readwrite }
@@ -402,7 +410,7 @@ elements:
     type: application-interface
     name: Files API
     specialization: "rest api"
-    description: "A model's files and the content of one, by path or by the id of a content; an overlay — a person's draft files, held for the reads that name it, with what the model comes to with them; and promote — the files of a draft written as one commit on the branch the person names, the default when none, pushed with the person's own credential, or, where it names the default to bring in, the branch's update from it as one merge commit with two parents; and merge — a stale file of a draft merged with the head's, or a file of a branch merged with the default's, a text line by line and a view by structure, answering what both sides agree on and what the person decides."
+    description: "A model's files and the content of one, by path or by the id of a content; an overlay — a person's draft files, held for the reads that name it, with what the model comes to with them; and promote — the files of a draft written as one commit on the branch the person names, the default when none, pushed with the person's own credential, or, where it names the default to bring in, the branch's update from it as one merge commit with two parents; and the sessions of a model — a draft shared as a session on a branch other than the default, listed, shared, read as its state, joined, left, handed to another owner, ended, written to by its participants as whole files from the content each was made from, with the files a person holds and the session's files sent again by its keeper, a file's content read, and a promote that names the session, which lands the whole draft with those who wrote it as co-authors; and merge — a stale file of a draft merged with the head's, or a file of a branch merged with the default's, a text line by line and a view by structure, answering what both sides agree on and what the person decides."
     properties:
       realization-status: develop
       protocol: HTTP
@@ -437,7 +445,7 @@ elements:
     type: application-interface
     name: Live API
     specialization: "websocket api"
-    description: "The live channel of an open model: a WebSocket that pushes the head's revision whenever the head moves and the list of who is on which view and in which file, each person's place sent by the client and kept in memory only. A signal, never a lock and never state."
+    description: "The live channel of an open model: a WebSocket that pushes the head's revision whenever the head moves and the list of who is on which view and in which file, each person's place sent by the client and kept in memory only; and, for a collaborative session, the session a person is in with the place, pointer, viewport and cursor they send, the session's edits told as signals to read over HTTP, its people, owner, keeper, holds and promote, and its end. A signal, never a lock and never state."
     properties:
       realization-status: develop
       protocol: WebSocket
