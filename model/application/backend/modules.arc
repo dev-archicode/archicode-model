@@ -187,7 +187,7 @@ elements:
   storage-model:
     type: application-component
     name: Storage — Model
-    description: "The read model: a model's files and what its compilation yields, the declared relations alone, written at a revision and never changed, the head's row and the lease that guards moving it, and the reads over them, in PostgreSQL. Derived from the repository; it reads no git and compiles nothing."
+    description: "The read model: a model's files and what its compilation yields, the declared relations alone, a file's rows written once and shared by every revision that holds the file, a revision of each model and the draft revisions of people's overlays, none changed once written, the head's row and the lease that guards moving it, and the reads over them, in PostgreSQL. Derived from the repository; it reads no git and compiles nothing."
     properties:
       realization-status: develop
       module-kind: core
@@ -206,12 +206,12 @@ elements:
   read-model:
     type: data-object
     name: Read model
-    description: "The files of each model at a revision and what compiling them yields — elements, declared relations, packages, views; no derived relation — with a head per model naming the revision every read is answered from. Derived and disposable."
+    description: "The files of each model at a revision and what compiling them yields — elements, declared relations, packages, views; no derived relation — a file's rows kept once and shared by every revision that lists the file, so that a head brought in writes only what its commit changed and a branch holds only what it differs by. A head per model names the revision every read is answered from; a draft revision, which no branch names, lists the files a person's overlay changes over its head and is read only with that overlay. Derived and disposable."
 
   overlay:
     type: data-object
     name: Overlay
-    description: "A person's draft files of a model, as the service holds them to lay over its head: each file's path, the id of the content it started from and its new content or that it is deleted, with what compiling them with the head found, the findings and the rows of the model files they change. Named by the SHA-256 of its files. A cache the service may lose; the draft is the browser's."
+    description: "A person's draft files of a model, as the service holds them to lay over its head: each file's path, the id of the content it started from and its new content or that it is deleted, with what compiling them with the head found, and the findings; it holds no rows, which the check writes into the read model as a draft revision. Named by the SHA-256 of its files. A cache the service may lose; the draft is the browser's."
 
   session:
     type: data-object
@@ -303,8 +303,6 @@ elements:
       realization-status: develop
       protocol: "MCP, JSON-RPC 2.0 over stdio"
     relations:
-      - type: realization
-        target: motivation.nfr-s7
       - type: serving
         target: external.ai-agent
       - type: serving
@@ -313,7 +311,7 @@ elements:
   model-service:
     type: application-component
     name: Model service
-    description: "The model side behind the gateway: the web application's APIs over a model, the one writer to each model repository, and the product store's first owner. Writes the head of each branch it fetches into the read model and answers every read from there, of the branch the read names, from no compiled model, so any number of instances run side by side; each holds the compiled models of the heads it works on, the base of its next compilations, so that a commit costs what it changes. Holds a person's draft as overlays in Redis, which every instance shares, with the rows of the model files the draft changes, read in place of the head's, so that an element made or edited in the draft is seen before it is promoted. Stores no derived relation, neither in the read model nor in an overlay: a read that needs them asks a derivation session over the read model's declared relations, the draft's overlay laid over each wave. Knows no kind of git host."
+    description: "The model side behind the gateway: the web application's APIs over a model, the one writer to each model repository, and the product store's first owner. Writes the head of each branch it fetches into the read model and answers every read from there, of the branch the read names, from no compiled model, so any number of instances run side by side; each holds the compiled models of the heads it works on, the base of its next compilations, so that a commit costs what it changes. Holds a person's draft as overlays in Redis, which every instance shares, and checks each edit once by writing the head with the draft's files in place into the read model as a draft revision, which a read with that overlay reads as it reads a head and which is made again where it is gone, so that an element made or edited in the draft is seen before it is promoted. Stores no derived relation, neither in the read model nor in an overlay: a read that needs them asks a derivation session over the read model's declared relations, the draft revision's among them. Knows no kind of git host."
     properties:
       realization-status: develop
       module-kind: application
