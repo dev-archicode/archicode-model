@@ -70,7 +70,7 @@ elements:
       - type: aggregation
         target: application.backend.compiler.document
       - type: aggregation
-        target: application.backend.compiler.draft
+        target: application.backend.compiler.declaration
       - type: aggregation
         target: application.backend.compiler.graph
       - type: aggregation
