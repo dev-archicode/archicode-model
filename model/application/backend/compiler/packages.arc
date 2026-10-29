@@ -149,13 +149,13 @@ elements:
       - type: serving
         target: view
 
-  draft:
+  declaration:
     type: application-component
-    name: Draft
+    name: Declaration
     description: "What the readers of a model's documents have found so far, which becomes the model once, when reading is done."
     properties:
       realization-status: develop
-      path: compiler/src/main/java/dev/archicode/compiler/model/draft
+      path: compiler/src/main/java/dev/archicode/compiler/model/declaration
     relations:
       - type: serving
         target: linter
@@ -181,7 +181,7 @@ elements:
       - type: serving
         target: derivation
       - type: serving
-        target: draft
+        target: declaration
       - type: serving
         target: linter
       - type: serving
@@ -665,7 +665,7 @@ elements:
   assemble:
     type: process
     name: Assemble
-    description: "Puts the files' units together in path order into the draft and the source index. What two files declare twice is found here: the first in path order is kept, and the repeat is reported at its own place."
+    description: "Puts the files' units together in path order into the declarations and the source index. What two files declare twice is found here: the first in path order is kept, and the repeat is reported at its own place."
     relations:
       - type: triggering
         target: resolve
