@@ -150,7 +150,7 @@ elements:
   compare:
     type: application-component
     name: Compare
-    description: "What one compiled model changes against another, from two compilation results held in memory and nothing read from a store: the elements, the declared relations and the views added, changed with the fields that differ, and removed; for a changed view its nodes added, removed, moved and changed and its edges added, removed and changed. A hosted service and a local one embed it unchanged."
+    description: "What one compiled model changes against another, from two compilation results held in memory and nothing read from a store: the elements, the junctions, the declared relations and the views added, changed with the fields that differ, and removed; for a changed view its nodes added, removed, moved and changed and its edges added, removed and changed. A hosted service and a local one embed it unchanged."
     properties:
       realization-status: develop
       module-kind: core
